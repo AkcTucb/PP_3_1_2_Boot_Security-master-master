@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${user.id == null ? 'Добавить пользователя' : 'Редактировать пользователя'}"></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 th:text="${user.id == null ? 'Добавить пользователя' : 'Редактировать пользователя'}"></h2>
+
+    <form th:action="@{${user.id == null ? '/admin/userForm' : '/admin/userForm'}}" method="post" th:object="${user}" class="form-group">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <label>Имя:</label>
+        <input type="text" th:field="*{name}" class="form-control" required/><br>
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" class="form-control" required/><br>
+
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" class="form-control" required/><br>
+
+        <label>Роли:</label>
+        <select name="roles" multiple="multiple" class="form-control">
+            <option th:each="role : ${allRoles}" th:value="${role.name}" th:text="${role.name}"></option>
+        </select><br>
+
+        <input type="submit" value="Сохранить" class="btn btn-primary"/>
+        <a th:href="@{/users}" class="btn btn-secondary">Назад к списку</a>
+    </form>
+</div>
+
+</body>
+</html>

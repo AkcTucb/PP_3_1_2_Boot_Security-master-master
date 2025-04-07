@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Админская панель</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Добро пожаловать, Админ!</h2>
+
+  <div class="mt-4">
+    <a th:href="@{/admin/userForm}" class="btn btn-primary mb-2">Добавить нового пользователя</a>
+    <a th:href="@{/admin/admin}" class="btn btn-secondary mb-2">Список пользователей</a>
+    <a th:href="@{/admin/adminPage}" class="btn btn-info mb-2">Профиль администратора</a>
+  </div>
+
+  <div>
+    <a th:href="@{/logout}" class="btn btn-danger">Выйти</a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .profile-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .profile-header h2 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Spring Security Demo</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Выйти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/100" alt="User Avatar">
+            <div>
+                <h2 th:text="${user.name}"></h2>
+                <p th:text="${user.email}"></p>
+            </div>
+        </div>
+        <div>
+            <h5>Информация о пользователе</h5>
+            <ul>
+                <li><strong>Имя:</strong> <span th:text="${user.name}"></span></li>
+                <li><strong>Email:</strong> <span th:text="${user.email}"></span></li>
+                <li><strong>Роль:</strong> <span th:text="${user.roles}"></span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
