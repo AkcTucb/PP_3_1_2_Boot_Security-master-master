@@ -1,4 +1,5 @@
 package ru.kata.spring.boot_security.demo.dao;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -8,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -28,7 +30,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        em.persist(user);
+        if (user.getId() == null) {
+            em.persist(user);
+        } else {
+            em.merge(user);
+        }
     }
 
     @Override
@@ -54,6 +60,7 @@ public class UserDaoImpl implements UserDao {
             return null;
         }
     }
+
     @Override
     public User getUserByEmail(String email) {
         try {
@@ -68,5 +75,14 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
+    @Override
+    public Optional<User> findById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst();
+    }
 }

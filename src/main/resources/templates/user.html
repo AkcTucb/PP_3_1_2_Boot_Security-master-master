@@ -32,6 +32,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="id" th:value="${user.id}" />
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name" th:value="${user.name}" required>
@@ -81,5 +82,40 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#editForm').submit(function (event) {
+            event.preventDefault();
+
+            // Если поле "пароль" пустое — сделаем .prop('disabled', true)
+            // чтобы оно вообще не отправлялось на сервер.
+            const passwordField = $('input[name="password"]');
+            if (!passwordField.val()) {
+                passwordField.prop('disabled', true);
+            }
+
+            // Отправляем форму на /user/update (как POST)
+            $.ajax({
+                url: '/user/update',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert('Профиль успешно обновлен!');
+                    $('#editModal').modal('hide');
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('Произошла ошибка при обновлении профиля.');
+                }
+            });
+
+            // Восстанавливаем поле на всякий случай
+            passwordField.prop('disabled', false);
+        });
+    });
+</script>
+
 </body>
 </html>

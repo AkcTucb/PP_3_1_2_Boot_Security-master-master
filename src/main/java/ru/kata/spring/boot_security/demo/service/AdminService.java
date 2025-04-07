@@ -9,4 +9,6 @@ public interface AdminService {
     void addUser(User user);
     void deleteUser(Long id);
     void update(User user);
+
+    User findById(Long id);
 }

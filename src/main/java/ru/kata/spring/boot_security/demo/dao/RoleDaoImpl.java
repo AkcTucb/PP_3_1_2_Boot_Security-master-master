@@ -6,6 +6,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -34,5 +35,12 @@ public class RoleDaoImpl implements RoleDao {
         } else {
             em.merge(role);
         }
+    }
+
+    @Override
+    public List<Role> findByNameIn(List<String> names) {
+        TypedQuery<Role> query = em.createQuery("SELECT r FROM Role r WHERE r.name IN :names", Role.class);
+        query.setParameter("names", names);
+        return query.getResultList();
     }
 }

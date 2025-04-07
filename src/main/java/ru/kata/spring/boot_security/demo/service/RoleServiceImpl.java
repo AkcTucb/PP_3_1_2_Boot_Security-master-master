@@ -6,33 +6,36 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleDao roleDao;
-
     @Autowired
-    public RoleServiceImpl(RoleDao roleDao) {
-        this.roleDao = roleDao;
+    private RoleDao roleDao;
+
+    @Override
+    public Set<Role> findRolesByName(List<String> roleNames) {
+        // roleDao.findByNameIn(...) возвращает List<Role>, преобразуем в Set
+        return new HashSet<>(roleDao.findByNameIn(roleNames));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Role getRoleByName(String roleName) {
         return roleDao.getRoleByName(roleName);
     }
 
     @Override
-    @Transactional
     public void saveRole(Role role) {
         roleDao.saveRole(role);
     }
 }
+

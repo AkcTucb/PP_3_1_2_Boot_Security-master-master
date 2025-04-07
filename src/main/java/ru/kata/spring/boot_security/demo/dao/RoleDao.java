@@ -8,4 +8,5 @@ public interface RoleDao {
     List<Role> getAllRoles();
     Role getRoleByName(String roleName);
     void saveRole(Role role);
+    List<Role> findByNameIn(List<String> names);
 }

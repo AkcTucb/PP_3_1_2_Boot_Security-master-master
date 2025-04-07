@@ -42,10 +42,24 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void update(User user) {
-        if (!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void update(User updatedUser) {
+        User existing = userDao.getUserById(updatedUser.getId());
+        if (existing == null) {
+            throw new IllegalArgumentException("No user with id = "+updatedUser.getId());
         }
-        userDao.updateUser(user);
+
+        existing.setName(updatedUser.getName());
+        existing.setEmail(updatedUser.getEmail());
+        // Если пароль непустой => меняем:
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        existing.setRoles(updatedUser.getRoles());
+        userDao.updateUser(existing);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userDao.findById(id).orElse(null);
     }
 }

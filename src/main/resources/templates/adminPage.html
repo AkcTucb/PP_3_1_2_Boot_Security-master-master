@@ -1,13 +1,57 @@
 <!-- adminPage.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Admin Page</title>
+    <title>Страница Администратора</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Добро пожаловать в Admin Page!</h1>
-<a href="/admin">Вернуться на главную админку</a>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/admin">Admin Panel</a>
+    <button class="navbar-toggler" type="button"
+            data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Переключить навигацию">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <!-- Пример дополнительных ссылок: -->
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/list">Список пользователей</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/userForm">Создать пользователя</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Выйти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Основной контейнер контента -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="mb-4">Добро пожаловать в панель администратора</h1>
+            <p>Здесь вы можете управлять пользователями, просматривать их профили,
+                редактировать данные и добавлять новых.</p>
+            <hr>
+            <p>Воспользуйтесь меню сверху, чтобы перейти к нужной секции.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаем библиотеки JS (Bootstrap и jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
