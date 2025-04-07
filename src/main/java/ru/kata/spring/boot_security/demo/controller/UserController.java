@@ -17,29 +17,6 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> userList = userService.getAllUsers();
-        model.addAttribute("users", userList);
-        return "userlist";
-    }
-
-
-
-    @GetMapping("/user/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("user", new User());
-        return "userform";
-    }
-
-
-    @PostMapping("/user/add")
-    public String addUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-
-
     @GetMapping("/user/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
         User user = userService.getUser(id);
@@ -47,25 +24,29 @@ public class UserController {
         return "userform";
     }
 
-
-    @PostMapping("/user/edit")
-    public String updateUser(@ModelAttribute("user") User user) {
-        System.out.println("ID пользователя: " + user.getId());
-        userService.update(user);
-        return "redirect:/users";
-    }
-
-
-    @DeleteMapping("/user/delete")
-    public String deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/users";
-    }
     @GetMapping("/user")
     public String userPage(Model model, Principal principal) {
         User user = userService.findByEmail(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }
+    @PostMapping("/update")
+    public String updateProfile(@ModelAttribute("user") User user, Principal principal) {
+        User existingUser = userService.findByEmail(principal.getName());
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            existingUser.setPassword(user.getPassword());
+        }
+        userService.update(existingUser);
+        return "redirect:/user";
+    }
+    @PostMapping("/delete")
+    public String deleteProfile(Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        userService.deleteUser(user.getId());
+        return "redirect:/logout";
+    }
+
 }
 

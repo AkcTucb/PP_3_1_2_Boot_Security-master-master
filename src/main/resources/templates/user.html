@@ -1,67 +1,85 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User Profile</title>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f0f2f5;
-        }
-        .profile-card {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-top: 50px;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .profile-header img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-right: 20px;
-        }
-        .profile-header h2 {
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Spring Security Demo</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}">Выйти</a>
-            </li>
-        </ul>
+<div class="container mt-5">
+    <h2>Ваш профиль</h2>
+    <div>
+        <p><strong>Имя:</strong> <span th:text="${user.name}"></span></p>
+        <p><strong>Почта:</strong> <span th:text="${user.email}"></span></p>
     </div>
-</nav>
 
-<div class="container">
-    <div class="profile-card">
-        <div class="profile-header">
-            <img src="https://via.placeholder.com/100" alt="User Avatar">
-            <div>
-                <h2 th:text="${user.name}"></h2>
-                <p th:text="${user.email}"></p>
-            </div>
-        </div>
-        <div>
-            <h5>Информация о пользователе</h5>
-            <ul>
-                <li><strong>Имя:</strong> <span th:text="${user.name}"></span></li>
-                <li><strong>Email:</strong> <span th:text="${user.email}"></span></li>
-                <li><strong>Роль:</strong> <span th:text="${user.roles}"></span></li>
-            </ul>
+    <!-- Кнопка для редактирования профиля -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Редактировать профиль</button>
+
+    <!-- Кнопка для удаления профиля -->
+    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Удалить профиль</button>
+</div>
+
+<!-- Модальное окно для редактирования -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Редактировать профиль</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="name" th:value="${user.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Почта</label>
+                        <input type="email" class="form-control" name="email" th:value="${user.email}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль (оставить пустым, если не хотите менять)</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+
+<!-- Модальное окно для удаления -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/user/delete}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Удаление профиля</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите удалить свой профиль? Это действие необратимо.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -10,21 +10,21 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AdminServiceImpl implements AdminService {
 
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
+    public AdminServiceImpl(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User getUser(Long id) {
-        return userDao.getUserById(id);
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     @Override
@@ -36,22 +36,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void deleteUser(Long id) {
+        userDao.deleteUser(id);
+    }
+
+    @Override
+    @Transactional
     public void update(User user) {
         if (!user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userDao.updateUser(user);
-    }
-
-
-    @Override
-    @Transactional
-    public void deleteUser(Long id) {
-        userDao.deleteUser(id);
-    }
-    @Override
-    @Transactional(readOnly = true)
-    public User findByEmail(String email) {
-        return userDao.getUserByEmail(email);
     }
 }
