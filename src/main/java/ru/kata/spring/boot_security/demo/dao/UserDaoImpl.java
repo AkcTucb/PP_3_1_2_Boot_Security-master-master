@@ -64,7 +64,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserByEmail(String email) {
         try {
-            return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+            return em.createQuery(
+                            "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
