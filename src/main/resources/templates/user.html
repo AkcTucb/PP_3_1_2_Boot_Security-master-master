@@ -1,102 +1,237 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Профиль пользователя</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Ваш профиль</h2>
-    <div>
-        <p><strong>Имя:</strong> <span th:text="${user.name}"></span></p>
-        <p><strong>Почта:</strong> <span th:text="${user.email}"></span></p>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">User Panel</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Выйти</a>
+            </li>
+        </ul>
     </div>
+</nav>
 
-    <!-- Кнопка для редактирования профиля -->
-    <button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Редактировать профиль</button>
 
-    <!-- Кнопка для удаления профиля -->
-    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Удалить профиль</button>
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Ваш профиль</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Имя:</strong>
+                        <span th:text="${user.name}"></span>
+                    </p>
+                    <p>
+                        <strong>Почта:</strong>
+                        <span th:text="${user.email}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Роли:</strong>
+                        <span th:each="r : ${user.roles}"
+                              th:text="${r.name} + ' '"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+
+            <div class="mb-3">
+                <button
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#editModal"
+                >
+                    Редактировать профиль
+                </button>
+                <button
+                        class="btn btn-danger"
+                        data-toggle="modal"
+                        data-target="#deleteModal"
+                >
+                    Удалить профиль
+                </button>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body">
+                    <h5>Добро пожаловать!</h5>
+                    <p>Здесь вы можете при желании добавить дополнительную информацию о вашем профиле,
+                        последние действия, статистику, и т.д.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Модальное окно для редактирования -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+
+
+<div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+>
     <div class="modal-dialog">
         <div class="modal-content">
+
             <form id="editForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Редактировать профиль</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" th:value="${user.id}" />
+
+                    <input
+                            type="hidden"
+                            name="id"
+                            th:value="${user.id}"
+                    />
+
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" th:value="${user.name}" required>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                th:value="${user.name}"
+                                required
+                        />
                     </div>
                     <div class="form-group">
                         <label>Почта</label>
-                        <input type="email" class="form-control" name="email" th:value="${user.email}" required>
+                        <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                th:value="${user.email}"
+                                required
+                        />
                     </div>
                     <div class="form-group">
                         <label>Пароль (оставить пустым, если не хотите менять)</label>
-                        <input type="password" class="form-control" name="password">
+                        <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                        />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                    >
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Сохранить изменения
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-<!-- Модальное окно для удаления -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div
+        class="modal fade"
+        id="deleteModal"
+        tabindex="-1"
+        aria-labelledby="deleteModalLabel"
+        aria-hidden="true"
+>
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/user/delete}" method="post">
+            <form
+                    th:action="@{/user/delete}"
+                    method="post"
+            >
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Удаление профиля</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Вы уверены, что хотите удалить свой профиль? Это действие необратимо.</p>
+                    <p>
+                        Вы уверены, что хотите удалить свой профиль?
+                        Это действие необратимо.
+                    </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-danger">Удалить</button>
+                    <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                    >
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        Удалить
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap + jQuery -->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+></script>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+></script>
 <script>
     $(document).ready(function () {
         $('#editForm').submit(function (event) {
             event.preventDefault();
-
-            // Если поле "пароль" пустое — сделаем .prop('disabled', true)
-            // чтобы оно вообще не отправлялось на сервер.
             const passwordField = $('input[name="password"]');
+
             if (!passwordField.val()) {
                 passwordField.prop('disabled', true);
             }
-
-            // Отправляем форму на /user/update (как POST)
             $.ajax({
                 url: '/user/update',
                 type: 'POST',
@@ -110,8 +245,6 @@
                     alert('Произошла ошибка при обновлении профиля.');
                 }
             });
-
-            // Восстанавливаем поле на всякий случай
             passwordField.prop('disabled', false);
         });
     });

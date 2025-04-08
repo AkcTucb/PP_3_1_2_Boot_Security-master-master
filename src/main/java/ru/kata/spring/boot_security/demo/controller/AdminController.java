@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.AdminService;
 import ru.kata.spring.boot_security.demo.service.RoleService;
-import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,15 +27,21 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/list")
-    public String listUsers(Model model) {
+
+    @GetMapping
+    public String showAdminPage(Model model,
+                                @AuthenticationPrincipal User authUser) {
+        model.addAttribute("currentUser", authUser);
         model.addAttribute("users", adminService.getAllUsers());
-        return "userList";
+        model.addAttribute("allRoles", roleService.getAllRoles());
+        model.addAttribute("newUser", new User());
+        return "adminPage";
     }
+
 
     @PostMapping("/userForm")
     public String saveUser(
-            @ModelAttribute("user") User user,
+            @ModelAttribute("newUser") User user,
             @RequestParam(value = "roles", required = false) List<String> roleNames
     ) {
         if (roleNames != null && !roleNames.isEmpty()) {
@@ -54,60 +59,12 @@ public class AdminController {
         } else {
             adminService.update(user);
         }
-
-        return "redirect:/admin/list";
+        return "redirect:/admin";
     }
-
-    @GetMapping("/userForm")
-    public String createOrEditUserForm(
-            @RequestParam(value = "id", required = false) Long id,
-            Model model
-    ) {
-        if (id == null) {
-            model.addAttribute("user", new User());
-        } else {
-            User existingUser = adminService.findById(id);
-            model.addAttribute("user", existingUser);
-        }
-        model.addAttribute("allRoles", roleService.getAllRoles());
-        return "userForm";
-    }
-
-
-    @GetMapping()
-    public String adminPage() {
-        return "admin";
-    }
-
-    @GetMapping("/adminPage")
-    public String getAdminProfile(Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("user", user);
-        return "adminPage";
-    }
-
-    @GetMapping("/addForm")
-    public String showAddForm(Model model) {
-        model.addAttribute("user", new User());
-        return "userform";
-    }
-
-    @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") User user) {
-        adminService.addUser(user);
-        return "redirect:/users";
-    }
-
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long userId) {
         adminService.deleteUser(userId);
-        return "redirect:/admin/list";
+        return "redirect:/admin";
     }
-
-    @PostMapping("/edit")
-    public String updateUser(@ModelAttribute("user") User user) {
-        System.out.println("ID пользователя: " + user.getId());
-        adminService.update(user);
-        return "redirect:/users";
-    }
-
 }
+
