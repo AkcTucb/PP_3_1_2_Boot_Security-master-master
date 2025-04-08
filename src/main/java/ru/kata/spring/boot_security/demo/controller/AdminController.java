@@ -44,7 +44,7 @@ public class AdminController {
             @ModelAttribute("newUser") User user,
             @RequestParam(value = "roles", required = false) List<String> roleNames
     ) {
-        if (roleNames != null && !roleNames.isEmpty()) {
+        if (roleNames != null) {
             Set<Role> roleSet = new HashSet<>();
             for (String roleName : roleNames) {
                 Role found = roleService.getRoleByName(roleName);
@@ -54,11 +54,25 @@ public class AdminController {
             }
             user.setRoles(roleSet);
         }
-        if (user.getId() == null) {
-            adminService.addUser(user);
-        } else {
-            adminService.update(user);
+        adminService.addUser(user);
+        return "redirect:/admin";
+    }
+    @PostMapping("/update")
+    public String updateUser(
+            @ModelAttribute("newUser") User user,
+            @RequestParam(value = "roles", required = false) List<String> roleNames
+    ) {
+        if (roleNames != null) {
+            Set<Role> roleSet = new HashSet<>();
+            for (String roleName : roleNames) {
+                Role found = roleService.getRoleByName(roleName);
+                if (found != null) {
+                    roleSet.add(found);
+                }
+            }
+            user.setRoles(roleSet);
         }
+        adminService.update(user);
         return "redirect:/admin";
     }
     @PostMapping("/delete")

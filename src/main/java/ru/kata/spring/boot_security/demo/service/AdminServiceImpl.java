@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
 
         existing.setName(updatedUser.getName());
         existing.setEmail(updatedUser.getEmail());
-        // Если пароль непустой => меняем:
+
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existing.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
