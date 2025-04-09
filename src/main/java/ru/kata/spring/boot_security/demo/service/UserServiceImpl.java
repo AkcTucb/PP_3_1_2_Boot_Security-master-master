@@ -44,8 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        // Если пароль ещё не кодирован — кодируем
-        // (зависит от логики, можно проверять, matches(...) ?)
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.saveUser(user);
     }
